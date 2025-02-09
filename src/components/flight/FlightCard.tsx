@@ -1,94 +1,52 @@
 import React from 'react';
+import { Flight } from '../../types/flight.types';
 import {
   Card,
   CardContent,
   Typography,
   Box,
-  Chip,
   Button,
-  Divider,
   Grid,
-  useTheme
+  Chip
 } from '@mui/material';
-import {
-  FlightTakeoff,
-  FlightLand,
-  AccessTime,
-  Airlines
+import { 
+  FlightTakeoff, 
+  FlightLand, 
+  AccessTime 
 } from '@mui/icons-material';
 
 interface FlightCardProps {
-  flight: {
-    id: string;
-    airline: string;
-    flightNumber: string;
-    departureTime: string;
-    arrivalTime: string;
-    origin: {
-      city: string;
-      code: string;
-    };
-    destination: {
-      city: string;
-      code: string;
-    };
-    duration: string;
-    price: {
-      amount: number;
-      currency: string;
-    };
-    stops: number;
-  };
+  flight: Flight;
   onSelect: (flightId: string) => void;
 }
 
 const FlightCard: React.FC<FlightCardProps> = ({ flight, onSelect }) => {
-  const theme = useTheme();
-
-  // Format price with currency
   const formatPrice = (price: { amount: number; currency: string }) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: price.currency
+      currency: price.currency,
+      minimumFractionDigits: 0
     }).format(price.amount);
   };
 
-  // Get stop label
-  const getStopLabel = (stops: number) => {
-    if (stops === 0) return 'Direct';
-    return `${stops} ${stops === 1 ? 'Stop' : 'Stops'}`;
-  };
-
   return (
-    <Card 
-      sx={{ 
-        mb: 2,
-        '&:hover': {
-          boxShadow: theme.shadows[4],
-          transform: 'translateY(-2px)',
-          transition: 'all 0.3s'
-        }
-      }}
-    >
+    <Card sx={{ mb: 2 }}>
       <CardContent>
         <Grid container spacing={2}>
           {/* Airline Info */}
           <Grid item xs={12}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Airlines sx={{ mr: 1 }} />
-              <Typography variant="h6">
-                {flight.airline} - {flight.flightNumber}
-              </Typography>
-            </Box>
+            <Typography variant="h6">
+              {flight.airline} - {flight.flightNumber}
+            </Typography>
           </Grid>
 
           {/* Flight Times */}
           <Grid item xs={12} md={4}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <FlightTakeoff sx={{ mr: 1, color: 'primary.main' }} />
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <FlightTakeoff color="primary" />
                 <Box>
-                  <Typography variant="body1" fontWeight="bold">
+                  <Typography variant="body1">
                     {flight.departureTime}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -97,10 +55,10 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight, onSelect }) => {
                 </Box>
               </Box>
 
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <FlightLand sx={{ mr: 1, color: 'primary.main' }} />
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <FlightLand color="primary" />
                 <Box>
-                  <Typography variant="body1" fontWeight="bold">
+                  <Typography variant="body1">
                     {flight.arrivalTime}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -113,17 +71,14 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight, onSelect }) => {
 
           {/* Duration and Stops */}
           <Grid item xs={12} md={4}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccessTime sx={{ mr: 1 }} />
-                <Typography variant="body1">
-                  {flight.duration}
-                </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <AccessTime />
+                <Typography>{flight.duration}</Typography>
               </Box>
               <Chip 
-                label={getStopLabel(flight.stops)}
+                label={flight.stops === 0 ? 'Non-stop' : `${flight.stops} ${flight.stops === 1 ? 'stop' : 'stops'}`}
                 color={flight.stops === 0 ? 'success' : 'default'}
-                size="small"
               />
             </Box>
           </Grid>
@@ -137,13 +92,13 @@ const FlightCard: React.FC<FlightCardProps> = ({ flight, onSelect }) => {
               height: '100%',
               justifyContent: 'space-between'
             }}>
-              <Typography variant="h5" color="primary" fontWeight="bold">
+              <Typography variant="h5" color="primary">
                 {formatPrice(flight.price)}
               </Typography>
-              <Button 
-                variant="contained" 
-                color="primary"
+              <Button
+                variant="contained"
                 onClick={() => onSelect(flight.id)}
+                sx={{ mt: 2 }}
               >
                 Select Flight
               </Button>

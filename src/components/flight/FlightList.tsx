@@ -36,14 +36,12 @@ const FlightList: React.FC<FlightListProps> = ({
         setSortBy(event.target.value as SortOption);
     };
 
-    // Sort flights based on selected option
     const getSortedFlights = () => {
         return [...flights].sort((a, b) => {
             switch (sortBy) {
                 case 'price':
                     return a.price.amount - b.price.amount;
                 case 'duration':
-                    // Assuming duration is in format "2h 30m", convert to minutes for comparison
                     const getDurationInMinutes = (duration: string) => {
                         const [hours, minutes] = duration.split('h ');
                         return parseInt(hours) * 60 + parseInt(minutes);
@@ -99,19 +97,16 @@ const FlightList: React.FC<FlightListProps> = ({
             {/* Flight cards list */}
             <Box sx={{ mt: 2 }}>
                 {loading ? (
-                    // Loading skeletons
                     [...Array(3)].map((_, index) => (
                         <Paper key={index} sx={{ p: 2, mb: 2 }}>
                             <Skeleton variant="rectangular" height={200} />
                         </Paper>
                     ))
                 ) : flights.length === 0 ? (
-                    // No results message
                     <Alert severity="info">
                         No flights found matching your criteria. Try adjusting your search parameters.
                     </Alert>
                 ) : (
-                    // Flight cards
                     getSortedFlights().map(flight => (
                         <FlightCard
                             key={flight.id}

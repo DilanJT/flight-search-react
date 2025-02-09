@@ -61,7 +61,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     stops
   });
 
-  // Format price for display
   const formatPrice = (value: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -71,7 +70,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     }).format(value);
   };
 
-  // Handle price range change
   const handlePriceChange = (_: Event, newValue: number | number[]) => {
     if (Array.isArray(newValue)) {
       setLocalFilters(prev => ({
@@ -84,7 +82,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     }
   };
 
-  // Handle airline selection
   const handleAirlineChange = (airline: string) => {
     setLocalFilters(prev => ({
       ...prev,
@@ -94,7 +91,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     }));
   };
 
-  // Handle stops selection
   const handleStopsChange = (stop: number) => {
     setLocalFilters(prev => ({
       ...prev,
@@ -104,12 +100,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     }));
   };
 
-  // Apply filters
   const applyFilters = () => {
     onFilterChange(localFilters);
   };
 
-  // Reset filters
   const handleReset = () => {
     setLocalFilters({
       priceRange: { min: priceRange.min, max: priceRange.max },
@@ -119,7 +113,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     onReset();
   };
 
-  // Get active filter count
   const getActiveFilterCount = (): number => {
     return (
       (localFilters.selectedAirlines.length > 0 ? 1 : 0) +

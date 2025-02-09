@@ -100,7 +100,6 @@ const DateGrid: React.FC<DateGridProps> = ({
 
             <Grid container spacing={1}>
                 {loading ? (
-                    // Loading skeleton
                     Array.from(new Array(7)).map((_, index) => (
                         <Grid item xs key={index}>
                             <Skeleton
@@ -111,7 +110,6 @@ const DateGrid: React.FC<DateGridProps> = ({
                         </Grid>
                     ))
                 ) : (
-                    // Date grid
                     dates.map((datePrice) => {
                         const formattedDate = formatDate(datePrice.date);
                         const isSelected = datePrice.date === selectedDate;

@@ -48,7 +48,6 @@ const PopularDestinations: React.FC<PopularDestinationsProps> = ({
     }).format(price.amount);
   };
 
-  // Loading skeleton component
   const DestinationSkeleton = () => (
     <Card sx={{ height: '100%' }}>
       <Skeleton variant="rectangular" height={200} />

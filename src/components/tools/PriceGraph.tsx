@@ -21,7 +21,6 @@ import {
 } from 'recharts';
 import { InfoOutlined } from '@mui/icons-material';
 
-// Define types for our data structure
 interface PriceHistoryPoint {
     date: string;
     price: number;
@@ -36,7 +35,6 @@ interface PriceGraphProps {
 const PriceGraph: React.FC<PriceGraphProps> = ({ data, currency }) => {
     const theme = useTheme();
 
-    // Format price for display
     const formatPrice = (value: number) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -46,7 +44,6 @@ const PriceGraph: React.FC<PriceGraphProps> = ({ data, currency }) => {
         }).format(value);
     };
 
-    // Custom tooltip component for the graph
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
             return (
